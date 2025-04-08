@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rimraf dist && rollup -c src/bundler/rollup.config.js",
     "build:watch": "rollup -c src/bundler/rollup.config.js -w",
-    "build:file": "rimraf dist && cross-env FILE_NAME=$1 rollup -c src/bundler/rollup.config.js"
+    "build:file": "node src/bundler/build.js",
+    "upload": "node src/bundler/deploy.js"
   },
   "keywords": [],
   "author": "",
