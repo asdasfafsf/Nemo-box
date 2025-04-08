@@ -1,16 +1,16 @@
 import typia from "typia";
-export type Request<T> = T;
-export type Response<T> = {
-    code: ResponseCode 
-    message: ResponseMessage;
-    techMessage: ResponseTechMessage;
+export type NemoRequest<T> = T;
+export type NemoResponse<T> = {
+    code: NemoResponseCode 
+    message: NemoResponseMessage;
+    techMessage: NemoResponseTechMessage;
     data: T;
 }
 
-export type ResponseCode = 
+export type NemoResponseCode = 
     string
     & (typia.tags.Pattern<"^[1][0-9]{4}$"> & 
     typia.tags.MinLength<5> & 
     typia.tags.MaxLength<5>);
-export type ResponseMessage = string;
-export type ResponseTechMessage = string;
+export type NemoResponseMessage = string;
+export type NemoResponseTechMessage = string;
