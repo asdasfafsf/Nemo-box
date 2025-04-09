@@ -114,9 +114,9 @@ pnpm publish example
 
 ## S3 배포
 
-배포된 파일은 S3 버킷의 `scripts/` 디렉토리에 저장됩니다.
+배포된 파일은 S3 버킷의 `script/` 디렉토리에 저장됩니다.
 접근 URL은 다음과 같습니다:
 
 ```
-[S3_ENDPOINT]/scripts/[FILE_NAME].js
+[S3_ENDPOINT]/script/[FILE_NAME].js
 ```
