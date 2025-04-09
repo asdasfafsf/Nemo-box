@@ -33,17 +33,56 @@ S3_ENDPOINT=your-s3-endpoint
 
 `src/script` 디렉토리 아래에 `nemo.[파일이름].ts` 이름 패턴의 파일을 생성합니다.
 
-예제:
+### 모듈 작성 규칙
+
+각 모듈은 반드시 `nemo` 함수를 export해야 합니다:
+
+- 입력 타입: `NemoRequest<T>` 타입의 인자가 전달됩니다.
+- 출력 타입: `NemoResponse<T>` 또는 `Promise<NemoResponse<T>>` 타입을 반환해야 합니다.
+
+#### 타입 정의
+
+프로젝트에서 사용하는 실제 타입 정의는 다음과 같습니다:
+
+```typescript
+// src/types/common.ts
+
+// 요청 타입
+export type NemoRequest<T> = T;
+
+// 응답 타입
+export type NemoResponse<T> = {
+  code: NemoResponseCode;
+  message: NemoResponseMessage;
+  techMessage: NemoResponseTechMessage;
+  data: T;
+};
+
+// 응답 코드 타입 (정규식 패턴으로 5자리 숫자, 1로 시작)
+export type NemoResponseCode = string &
+  (typia.tags.Pattern<"^[1][0-9]{4}$"> &
+    typia.tags.MinLength<5> &
+    typia.tags.MaxLength<5>);
+
+export type NemoResponseMessage = string;
+export type NemoResponseTechMessage = string;
+```
+
+### 예제
 
 ```typescript
 // src/script/nemo.example.ts
-export const helloNemo = () => {
-  console.log("Hello from Nemo!");
-  return "Hello from Nemo!";
-};
+import { NemoResponse } from "../../types/common";
 
-if (import.meta.url === import.meta.resolve(process.argv[1])) {
-  helloNemo();
+export async function nemo(): Promise<NemoResponse<any>> {
+  const response = await axios.get("https://example.com/api");
+
+  return {
+    code: "10000",
+    message: "성공",
+    techMessage: "",
+    data: response.data,
+  };
 }
 ```
 
@@ -64,7 +103,7 @@ pnpm build:file example
 
 ```bash
 # 특정 파일 빌드 후 S3에 배포 (example 파일의 경우)
-pnpm upload example
+pnpm publish example
 ```
 
 ## 빌드 결과
@@ -79,5 +118,5 @@ pnpm upload example
 접근 URL은 다음과 같습니다:
 
 ```
-[S3_ENDPOINT]/[S3_BUCKET_NAME]/scripts/[FILE_NAME].js
+[S3_ENDPOINT]/script/[FILE_NAME].js
 ```

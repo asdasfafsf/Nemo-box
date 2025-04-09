@@ -1,12 +1,11 @@
-import axios from "axios";
 import { NemoResponse } from '../../types/common'
 
-export function nemo(): NemoResponse<any> {
+export async function nemo(): Promise<NemoResponse<any>> {
     
     return {
-        code: "10000",
+        code: "1000",
         message: "",
         techMessage: "",
-        data: {}
+        data: "Hello, World!"
     }
 }
